@@ -14,7 +14,7 @@ public class GameWindow {
 	
 	public GameWindow(GamePanel panel) {
 		this.frame = new JFrame();
-		frame.setTitle("扫雷 V1.0");
+		frame.setTitle("俄罗斯方块 V1.0");
 //		设置默认关闭操作
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.add(panel);
