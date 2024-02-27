@@ -68,6 +68,7 @@ public class TetrisManage implements KeyListener {
 		} else if (Objects.nonNull(holdTetris)){
 			updateToGrids(holdTetris);
 			holdTetris = null;
+			updateLines();
 		} else {
 			if (fps > 25) {
 				holdTetris = nexTetris.poll();
@@ -82,7 +83,6 @@ public class TetrisManage implements KeyListener {
 			}
 			fps++;
 		}
-		updateLines();
 	}
 
 	private void updateToGrids(Tetris tetris) {
