@@ -124,8 +124,8 @@ public class TetrisManage implements KeyListener {
 		drawPlayingTetris((Graphics2D)g);
 		drawHoldTetris((Graphics2D)g);
 		drawNextTetris((Graphics2D)g);
-		drawGameState(g);
 		drawScore(g);
+		drawGameState(g);
 	}
 
 	private void drawScore(Graphics g) {
