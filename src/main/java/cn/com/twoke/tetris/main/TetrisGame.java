@@ -2,6 +2,7 @@ package cn.com.twoke.tetris.main;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
@@ -22,7 +23,7 @@ public class TetrisGame extends Game implements KeyListener {
 	}
 	
 	public static GamePanel buildGamePanel(Game game) {
-		return new GamePanel(game, 1024, 800);
+		return new GamePanel(game, 536, 441);
 	}
 	
 	@Override
@@ -32,7 +33,10 @@ public class TetrisGame extends Game implements KeyListener {
 
 	@Override
 	protected void doDraw(Graphics g) {
-		TetrisUtils.drawContainer((Graphics2D)g, START_X, START_Y, COL, ROW);
+		TetrisUtils.drawContainer((Graphics2D)g, START_X , START_Y, 6, 4);
+		TetrisUtils.drawContainer((Graphics2D)g, START_X , 
+				START_Y + BORDER_WIDTH + TILE_HEIGHT * 5 + 10, 6, 14.6f);
+		TetrisUtils.drawContainer((Graphics2D)g, START_X + PLAYING_PANEL_OFFSET_X, START_Y, COL, ROW);
 		TetrisUtils.drawContainer((Graphics2D)g, START_X + NEXT_PANEL_OFFSET_X , START_Y, 6, 20);
 		tetrisManage.draw(g);
 	}
