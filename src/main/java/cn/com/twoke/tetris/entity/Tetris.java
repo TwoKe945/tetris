@@ -196,7 +196,7 @@ public class Tetris implements KeyListener {
 	
 	public void draw(Graphics2D g) {
 		for (int i = 0; i < blocks.length; i++) {
-			TetrisUtils.drawTile((Graphics2D)g, blocks[i][0], blocks[i][1], color);
+			TetrisUtils.drawTile((Graphics2D)g, blocks[i][0], blocks[i][1],TetrisConfig.PLAYING_PANEL_OFFSET_X,0, color);
 		}
 	}
 

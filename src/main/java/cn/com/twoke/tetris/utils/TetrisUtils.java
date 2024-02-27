@@ -35,16 +35,16 @@ public class TetrisUtils {
 	
 	
 	
-	public static void drawContainer(Graphics2D g, int startX, int startY, int col, int row) {
+	public static void drawContainer(Graphics2D g, int startX, int startY, int col, float row) {
 		g.setColor(Color.BLACK);
 		g.setStroke(new BasicStroke(BORDER_WIDTH));
 		g.drawRect(startX, startY, TILE_WIDTH * col  + TILE_INTERVAL * (col - 1) + MARGIN_WIDTH * 2 + BORDER_WIDTH * 2,
-				TILE_WIDTH * row + TILE_INTERVAL * (row - 1)  + MARGIN_WIDTH * 2 + BORDER_WIDTH * 2 );
+				(int)(TILE_HEIGHT * row + TILE_INTERVAL * (row - 1)  + MARGIN_WIDTH * 2 + BORDER_WIDTH * 2 ));
 		g.setStroke(new BasicStroke(1));
 		g.drawRect(startX + BORDER_WIDTH + MARGIN_WIDTH / 2,
 				startY + BORDER_WIDTH + MARGIN_WIDTH / 2,
 				TILE_WIDTH * col  + TILE_INTERVAL * (col - 1) + MARGIN_WIDTH,
-				TILE_WIDTH * row + TILE_INTERVAL * (row - 1) + MARGIN_WIDTH);
+				(int)(TILE_HEIGHT * row + TILE_INTERVAL * (row - 1) + MARGIN_WIDTH));
 	}
 	
 	

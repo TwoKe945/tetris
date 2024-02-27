@@ -37,6 +37,8 @@ public class TetrisManage implements KeyListener {
 	private Random random;
 	private Queue<Tetris> nexTetris;
 	private int nextCount = 5;
+	private int score = 0;
+	private int count = 0;
 	
 	public TetrisManage(TetrisGame game) {
 		this.grids = new int[TetrisConfig.ROW][TetrisConfig.COL];
@@ -47,6 +49,8 @@ public class TetrisManage implements KeyListener {
 			nexTetris.add(randomTetris());
 		}
 		holdTetris = randomTetris();
+		count++;
+		score+=10;
 	}
 	
 	
@@ -69,9 +73,12 @@ public class TetrisManage implements KeyListener {
 				holdTetris = nexTetris.poll();
 				if (!holdTetris.canMove(grids)) {
 					gameOver = true;
+					return;
 				}
 				nexTetris.add(randomTetris());
 				fps = 0;
+				count++;
+				score+=10;
 			}
 			fps++;
 		}
@@ -109,28 +116,73 @@ public class TetrisManage implements KeyListener {
 					grids[y][x] = grids[y - 1][x];
 				}
 			}
+			score+=100;
 		}
 	}
 
 	public void draw(Graphics g) {
-		for (int y = 0; y < grids.length; y++) {
-			for (int x = 0; x < grids[y].length; x++) {
-				TetrisUtils.drawTile((Graphics2D)g, x, y, grids[y][x]);
-			}
-		}
-		if (Objects.nonNull(holdTetris)) {
-			holdTetris.draw((Graphics2D)g);
-		}
+		drawPlayingTetris((Graphics2D)g);
+		drawHoldTetris((Graphics2D)g);
 		drawNextTetris((Graphics2D)g);
+		drawGameState(g);
+		drawScore(g);
+	}
 
+	private void drawScore(Graphics g) {
+		g.setFont(new Font("宋体雅黑", Font.PLAIN, 15));
+		g.setColor(Color.white);
+		g.drawString("分数：" + score, START_X + 20, START_Y + BORDER_WIDTH + TILE_HEIGHT * 5 + 10 + 45);
+		g.drawString("块数：" + count, START_X + 20, START_Y + BORDER_WIDTH + TILE_HEIGHT * 5 + 10+ 25);
+	}
+
+
+	private void drawGameState(Graphics g) {
 		if (gameOver) {
 			g.setColor(new Color(0,0,0, 200));
 			g.fillRect(0, 0, 1024, 800);
 			g.setColor(Color.white);
 			g.setFont(new Font("宋体", Font.BOLD, 50));
-			g.drawString("游戏失败！", 512 - 150, 400);
+			g.drawString("游戏失败！", 536 / 2 - 100, 220);
 		}
 	}
+
+
+	private void drawPlayingTetris(Graphics2D g) {
+		for (int y = 0; y < grids.length; y++) {
+			for (int x = 0; x < grids[y].length; x++) {
+				TetrisUtils.drawTile(g, x, y, TetrisConfig.PLAYING_PANEL_OFFSET_X, 0, grids[y][x]);
+			}
+		}
+	}
+
+
+	private void drawHoldTetris(Graphics2D g) {
+		if (Objects.isNull(holdTetris)) return;
+		holdTetris.draw((Graphics2D)g);
+		Tetris holdTetris = new Tetris(0, 0, this.holdTetris.getColor(), this.holdTetris.getType());
+		int offsetX = 0;
+		for (int i = 0; i < holdTetris.getBlocks().length; i++) {
+			Point p = holdTetris.calcPoint(i, 0, 1);
+			if (i == 0) {
+				if (holdTetris.getType() == TetrisEnum.I) {
+					offsetX = (int)((21 * 6 - 21 * 4) / 2.0f);
+				} else if (holdTetris.getType() == TetrisEnum.O) {
+					offsetX = (int)((21 * 6 - 21 * 2) / 2.0f);
+				} else if (holdTetris.getType() == TetrisEnum.Z) {
+					offsetX = (int)((21 * 6 - 21 * 3f) / 2.0f);
+				} else if (holdTetris.getType() == TetrisEnum.J || holdTetris.getType() == TetrisEnum.L) {
+					offsetX = (int)((21 * 6 - 21 * 3f) / 2.0f);
+				} else if (holdTetris.getType() == TetrisEnum.S ||
+						holdTetris.getType() == TetrisEnum.T) {
+					offsetX = (int)((21 * 6 - 21 * 2f) / 2.0f) + 10;
+				}
+				
+			}
+			TetrisUtils.drawTile(g, START_X + offsetX + (BORDER_WIDTH + MARGIN_WIDTH) + p.x * (TILE_WIDTH + TILE_INTERVAL),
+					START_Y + (BORDER_WIDTH + MARGIN_WIDTH) + p.y * (TILE_WIDTH + TILE_INTERVAL), TILE_WIDTH, TILE_HEIGHT, 2, holdTetris.getColor());
+		}
+	}
+
 
 	private void drawNextTetris(Graphics2D g) {
 		Iterator<Tetris> iterator =  nexTetris.iterator();
